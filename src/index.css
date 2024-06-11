@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.MainTextColor {
+  @apply text-[#25AE9C];
+}
+
+.MainBgColor {
+  @apply bg-[#25AE9C];
+}
+
+.Title {
+  @apply font-semibold MainTextColor text-[2rem];
+}
+
+.IconHoverItem {
+  @apply hover:text-slate-500 cursor-pointer;
+}
+
+.ItemInput {
+  @apply rounded-md outline-none px-1 py-1 focus:shadow-md;
+}
+
+.ItemCard {
+  @apply justify-between flex w-full gap-1 ;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+label {
+  @apply select-none;
+}
+
+@layer utilities {
+  .striped div:nth-child(even) {
+    @apply bg-slate-100
+  }
+}
