@@ -19,9 +19,11 @@ const MainOrders = () => {
     <div className="flex flex-col h-full w-full">
       <h1 className="font-semibold text-[30px]">Recent Orders</h1>
       <div className="w-full h-full overflow-y-auto">
-        {orders.map((item, index) => (
-          <Orderconfig item={item} />
-        ))}
+        {orders
+          .sort((a, b) => (a.order_date < b.order_date ? 1 : -1))
+          .map((item, index) => (
+            <Orderconfig item={item} />
+          ))}
       </div>
     </div>
   );

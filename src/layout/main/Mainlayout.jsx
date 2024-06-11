@@ -10,6 +10,8 @@ import {
   readCategory,
   listenForNewItems,
   listenForItemUpdates,
+  listenForNewItemsCategory,
+  listenForItemCategory,
 } from "../../components/firebase";
 
 const Mainlayout = () => {
@@ -20,6 +22,7 @@ const Mainlayout = () => {
       try {
         const data = await readData();
         const category = await readCategory();
+
         if (data) {
           setFetch_Data(
             Object.entries(data).map(([id, value]) => ({ id, ...value }))
@@ -34,6 +37,7 @@ const Mainlayout = () => {
         console.error("Failed to fetch shop items:", error);
       }
     };
+    fetch();
 
     const updateItems = (newItems) => {
       setFetch_Data(
@@ -41,8 +45,14 @@ const Mainlayout = () => {
       );
     };
 
+    const updateItemsCategory = (newItems) => {
+      setmetaData_Category(
+        Object.entries(newItems)?.map(([id, value]) => ({ id, ...value }))
+      );
+    };
+
     listenForItemUpdates(updateItems);
-    fetch();
+    listenForItemCategory(updateItemsCategory);
   }, []);
 
   useEffect(() => {
@@ -50,8 +60,14 @@ const Mainlayout = () => {
       setFetch_Data((isFetch_Data) => [...isFetch_Data, item]);
     };
 
+    const handleNewItemCategory = (item) => {
+      setmetaData_Category((metaData_Category) => [...metaData_Category, item]);
+    };
+
     listenForNewItems(handleNewItem);
+    listenForNewItemsCategory(handleNewItemCategory);
   }, []);
+
   return (
     <div className="w-full h-full bg-slate-100 px-10 py-5">
       <Suspense fallback={"Loading..."}>

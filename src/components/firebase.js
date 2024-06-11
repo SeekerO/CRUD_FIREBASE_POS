@@ -9,7 +9,9 @@ import {
   remove,
   update,
 } from "firebase/database";
+import { NotifyError, NotifySuccess } from "./Notify";
 
+// FETCHERS
 export async function readData() {
   const dbRef = ref(database, "shop_item");
   try {
@@ -55,21 +57,9 @@ export async function readDataOrders() {
     throw error;
   }
 }
+// FETCHERS END
 
-export function listenForNewItems(callback) {
-  const itemsRef = ref(database, "shop_item");
-
-  onChildAdded(
-    itemsRef,
-    (data) => {
-      callback(data.val());
-    },
-    (error) => {
-      console.error("Failed to listen for new items:", error);
-    }
-  );
-}
-
+// SETTERS
 export function writeNewItem(formData, uuid, setFormData, sizePrices) {
   const dbRef = ref(database, "shop_item/" + uuid);
   set(dbRef, {
@@ -98,45 +88,14 @@ export function writeDataCategory(isCatergories, uuid) {
   set(dbRef, {
     category: isCatergories,
   })
-    .then(() => {})
+    .then(() => {
+      const succes = "New Category Added Succesfuly!";
+      NotifySuccess(succes);
+    })
     .catch((error) => {
       console.error("Error writing data:", error);
     });
 }
-
-export async function updateItem(uuid, formData) {
-  const dbRef = ref(database, "shop_item/" + uuid);
-  try {
-    await set(dbRef, formData);
-    alert("Item updated successfully");
-  } catch (error) {
-    console.error("Error updating item:", error);
-  }
-}
-
-export function listenForItemUpdates(callback) {
-  const dbRef = ref(database, "shop_item");
-  onValue(dbRef, (snapshot) => {
-    const data = snapshot?.val() ? Object.values(snapshot.val()) : [];
-    callback(data);
-  });
-}
-
-export async function deleteItem(itemId) {
-  if (itemId === 0) return;
-  else {
-    const itemRef = ref(database, `shop_item/${itemId}`);
-    try {
-      await remove(itemRef);
-      alert(`Item ${itemId} deleted successfully`);
-      return true;
-    } catch (error) {
-      console.error("Error deleting item:", error);
-      throw error;
-    }
-  }
-}
-
 export async function handlePaid(items) {
   try {
     for (const cartItem of items) {
@@ -181,13 +140,115 @@ export async function handlePaid(items) {
     console.error("Error updating stock quantities: ", error);
   }
 }
+// SETTERS END
+
+// LISTENERS
+
+export function listenForNewItems(callback) {
+  const itemsRef = ref(database, "shop_item");
+
+  onChildAdded(
+    itemsRef,
+    (data) => {
+      callback(data.val());
+    },
+    (error) => {
+      console.error("Failed to listen for new items:", error);
+    }
+  );
+}
+
+export function listenForNewItemsCategory(callback) {
+  const itemsRef = ref(database, "category");
+
+  onChildAdded(
+    itemsRef,
+    (data) => {
+      callback(data.val());
+    },
+    (error) => {
+      console.error("Failed to listen for new items:", error);
+    }
+  );
+}
+
+export function listenForItemUpdates(callback) {
+  const dbRef = ref(database, "shop_item");
+  onValue(dbRef, (snapshot) => {
+    const data = snapshot?.val() ? Object.values(snapshot.val()) : [];
+    callback(data);
+  });
+}
+
+export function listenForItemCategory(callback) {
+  const dbRef = ref(database, "category");
+  onValue(dbRef, (snapshot) => {
+    const data = snapshot?.val() ? Object.values(snapshot.val()) : [];
+    callback(data);
+  });
+}
+// LISTENERS END
+
+// UPDATE
+export async function UpdateCategory_Database(new_Category) {
+  const dbRef = ref(database, "category");
+  const notifsuccess = "Category updated successfully";
+  try {
+    await set(dbRef, new_Category);
+    NotifySuccess(notifsuccess);
+  } catch (error) {
+    console.error("Error updating item:", error);
+  }
+}
+
+export async function updateItem(uuid, formData) {
+  const dbRef = ref(database, "shop_item/" + uuid);
+  const notifsuccess = "Item updated successfully";
+  try {
+    await set(dbRef, formData);
+    NotifySuccess(notifsuccess);
+  } catch (error) {
+    console.error("Error updating item:", error);
+  }
+}
 
 export async function handleOrderStore(order_list) {
-  const dbRef = ref(database, "orders/" + order_list.id);
-  set(dbRef, {
-    order_id: order_list.id,
-    order_items: order_list.items,
-    order_total: order_list.total,
-    order_date: order_list.date,
-  });
+  try {
+    const dbRef = ref(database, "orders/" + order_list.id);
+    const notifyMess = "Payment successful and stock updated.";
+
+    set(dbRef, {
+      order_id: order_list.id,
+      order_items: order_list.items,
+      order_total: order_list.total,
+      order_date: order_list.date,
+    });
+
+    NotifySuccess(notifyMess);
+    return true;
+  } catch (error) {
+    const notifyMessError = "Unable to Store";
+    NotifyError(notifyMessError);
+    return false;
+  }
+}
+
+// UPDATE END
+
+// DELETE
+export async function deleteItem(itemId) {
+  if (itemId === 0) return;
+  else {
+    const itemRef = ref(database, `shop_item/${itemId}`);
+    try {
+      await remove(itemRef);
+
+      const Item_deleted = `Item ${itemId} deleted successfully`;
+      NotifyError(Item_deleted);
+      return true;
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      throw error;
+    }
+  }
 }

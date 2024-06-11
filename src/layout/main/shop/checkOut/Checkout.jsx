@@ -3,7 +3,9 @@ import { IoIosArrowBack } from "react-icons/io";
 import { FaCashRegister } from "react-icons/fa";
 import { handlePaid, handleOrderStore } from "../../../../components/firebase";
 import { v4 as uuidv4 } from "uuid";
+
 import moment from "moment/moment";
+import { NotifySuccess } from "../../../../components/Notify";
 const Checkout = ({
   isAddToCart,
   openCheckout,
@@ -36,12 +38,14 @@ const Checkout = ({
         date: moment().format("MMMM Do YYYY, h:mm:ss a"),
       };
 
-      handleOrderStore(order_list);
-      setopenCheckout(false);
-      setopenCart(false);
-      setAddToCart([]);
+      if (handleOrderStore(order_list));
+      {
+        setopenCheckout(false);
+        setopenCart(false);
+        setAddToCart([]);
+      }
 
-      alert("Payment successful and stock updated.");
+      // alert("Payment successful and stock updated.");
     } catch (error) {
       console.error("Payment failed: ", error);
     }

@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   writeNewItem,
   writeDataCategory,
+  UpdateCategory_Database,
 } from "../../../../components/firebase";
 import { v4 as uuidv4 } from "uuid";
 import { IoAdd, IoClose } from "react-icons/io5";
 import { MdOutlineAddBox } from "react-icons/md";
 import { TbCategoryPlus } from "react-icons/tb";
+import { MdDelete } from "react-icons/md";
 import SizePicker from "../component_dashboard/SizePicker";
+import { NotifySuccess, NotifyWarning } from "../../../../components/Notify";
 
 const AddItems = ({ metaData_Category }) => {
   const [addCategory, setaddCategory] = useState(false);
-  const [isCatergories, setCategories] = useState("");
   const [isOptional, setisOptional] = useState(false);
+  const [inputCatergories, setCategories] = useState("");
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [sizePrices, setSizePrices] = useState([]);
   const [formData, setFormData] = useState({
@@ -21,6 +24,11 @@ const AddItems = ({ metaData_Category }) => {
     item_quantity: "",
     item_category: "",
   });
+  const [meta_data_state, set_meta_data_state] = useState();
+
+  useEffect(() => {
+    set_meta_data_state(metaData_Category);
+  }, [metaData_Category]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,26 +42,33 @@ const AddItems = ({ metaData_Category }) => {
     e.preventDefault();
     var saveUUID = uuidv4();
 
-    if (formData.item_category !== "") {
-      writeNewItem(formData, saveUUID, setFormData, sizePrices);
-      setFormData({
-        item_name: "",
-        item_price: "",
-        item_quantity: "",
-        item_category: "",
-      });
-      setisOptional(false);
-      setSelectedSizes([]);
-      setSizePrices([]);
-      setCategories("");
+    if (formData.item_category !== "" && formData.item_name !== "") {
+      if (formData.item_price !== "" && formData.item_quantity !== "") {
+        writeNewItem(formData, saveUUID, setFormData, sizePrices);
+        setFormData({
+          item_name: "",
+          item_price: "",
+          item_quantity: "",
+          item_category: "",
+        });
+        setisOptional(false);
+        setSelectedSizes([]);
+        setSizePrices([]);
+        setCategories("");
+      } else {
+        const warning = "Please fill the a price and quantity";
+        NotifyWarning(warning);
+      }
+    } else {
+      const warning = "Please select a category and name";
+      NotifyWarning(warning);
     }
   };
 
   const savecategory_databse = (e) => {
     e.preventDefault();
     const saveUUID = uuidv4();
-    writeDataCategory(isCatergories, saveUUID);
-    alert("New Category Added Succesfuly!");
+    writeDataCategory(inputCatergories, saveUUID);
     setCategories(""); // Clear category input
   };
 
@@ -80,6 +95,15 @@ const AddItems = ({ metaData_Category }) => {
     setSizePrices(newSizePrices);
   };
 
+  const handleRemoveItem = (id) => {
+    set_meta_data_state(meta_data_state.filter((item) => item.id !== id));
+  };
+
+  const handleUpdateCategories = (e) => {
+    e.preventDefault();
+    UpdateCategory_Database(meta_data_state);
+  };
+
   return (
     <div className="w-[500px] h-full py-5 px-1 bg-slate-300 rounded-md shadow-md flex flex-col items-center">
       <label className="w-full text-center font-semibold text-[20px] underline underline-offset-2">
@@ -91,18 +115,21 @@ const AddItems = ({ metaData_Category }) => {
           <label>CATEGORY:</label>
           <div className="flex items-center justify-between">
             {addCategory ? (
-              <div className="w-full flex">
-                <input
-                  required
-                  type="text"
-                  className="ItemInput"
-                  value={isCatergories}
-                  onChange={(e) => setCategories(e.target.value)}
-                />
-                <IoClose
-                  onClick={() => setaddCategory(!addCategory)}
-                  className="text-[30px] MainTextColor hover:text-blue-600 cursor-pointer"
-                />
+              <div className="flex flex-col w-full h-full">
+                <div className="w-full flex">
+                  <input
+                    required
+                    type="text"
+                    className="ItemInput"
+                    placeholder="Add Category Here.."
+                    value={inputCatergories}
+                    onChange={(e) => setCategories(e.target.value)}
+                  />
+                  <IoClose
+                    onClick={() => setaddCategory(!addCategory)}
+                    className="text-[30px] MainTextColor hover:text-blue-600 cursor-pointer"
+                  />
+                </div>
               </div>
             ) : (
               <>
@@ -232,13 +259,41 @@ const AddItems = ({ metaData_Category }) => {
             </div>
           </>
         )}
+
+        {addCategory && (
+          <div className="">
+            {meta_data_state.map((item, index) => (
+              <div
+                onClick={() => handleRemoveItem(item.id)}
+                key={index}
+                className="flex w-full justify-between mt-1 border-[1px] border-gray-400 p-1 rounded-md"
+              >
+                <span>{item.category}</span>
+
+                <MdDelete className="text-[20px] cursor-pointer hover:text-red-500" />
+              </div>
+            ))}
+          </div>
+        )}
+
         {addCategory ? (
-          <button
-            onClick={savecategory_databse}
-            className="w-full p-2 MainBgColor rounded-md flex gap-1 items-center justify-center mt-3 hover:text-slate-100 hover:shadow-md"
-          >
-            ADD CATEGORY <TbCategoryPlus className="text-[20px]" />
-          </button>
+          <>
+            {metaData_Category.length === meta_data_state.length ? (
+              <button
+                onClick={savecategory_databse}
+                className="w-full p-2 MainBgColor rounded-md flex gap-1 items-center justify-center mt-3 hover:text-slate-100 hover:shadow-md"
+              >
+                ADD CATEGORY <TbCategoryPlus className="text-[20px]" />
+              </button>
+            ) : (
+              <button
+                onClick={handleUpdateCategories}
+                className="w-full p-2 bg-blue-600 rounded-md flex gap-1 items-center justify-center mt-3 text-white hover:bg-opacity-50 hover:text-black hover:shadow-md"
+              >
+                SAVE CHANGES <TbCategoryPlus className="text-[20px]" />
+              </button>
+            )}
+          </>
         ) : (
           <button
             onClick={saveItem_database}
