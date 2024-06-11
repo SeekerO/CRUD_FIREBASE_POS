@@ -10,9 +10,10 @@ import { MdOutlineAddBox } from "react-icons/md";
 import { TbCategoryPlus } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
 import SizePicker from "../component_dashboard/SizePicker";
-import { NotifySuccess, NotifyWarning } from "../../../../components/Notify";
+import { NotifyWarning } from "../../../../components/Notify";
+import { MdOutlineArrowBackIosNew } from "react-icons/md";
 
-const AddItems = ({ metaData_Category }) => {
+const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
   const [addCategory, setaddCategory] = useState(false);
   const [isOptional, setisOptional] = useState(false);
   const [inputCatergories, setCategories] = useState("");
@@ -106,9 +107,18 @@ const AddItems = ({ metaData_Category }) => {
 
   return (
     <div className="w-[500px] h-full py-5 px-1 bg-slate-300 rounded-md shadow-md flex flex-col items-center">
-      <label className="w-full text-center font-semibold text-[20px] underline underline-offset-2">
-        ADD ITEMS
-      </label>
+      <div className="flex w-full items-center">
+        {deviceType && (
+          <MdOutlineArrowBackIosNew
+            className="text-[30px] cursor-pointer hover:text-blue-500"
+            onClick={() => HandleDeviceScreen()}
+          />
+        )}
+
+        <label className="w-full text-center font-semibold text-[20px] underline underline-offset-2">
+          ADD ITEMS
+        </label>
+      </div>
 
       <form className="px-2 mt-5 space-y-3 w-full h-[70vh] overflow-y-auto">
         <div className="gap-1 flex items-center justify-between">

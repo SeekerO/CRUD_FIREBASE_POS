@@ -53,8 +53,10 @@ const Orderconfig = ({ item }) => {
       )}
       <div
         className={`${
-          expandCell && "border-t-2 border-gray-300 py-1"
-        } grid grid-cols-3 font-bold`}
+          expandCell
+            ? "border-t-2 border-gray-300 py-1 grid grid-cols-3"
+            : "flex gap-1"
+        }  font-bold`}
       >
         <span className="font-semibold">TOTAL:</span>
         <div />

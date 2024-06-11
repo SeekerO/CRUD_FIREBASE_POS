@@ -2,8 +2,14 @@ import React, { useState } from "react";
 import SearchBar from "../../../../components/SearchBar";
 import { FaSort } from "react-icons/fa";
 import ItemConfig from "./itemconfig/ItemConfig";
+import { FiPlus } from "react-icons/fi";
 
-const Itemlist = ({ isFetch_Data, metaData_Category }) => {
+const Itemlist = ({
+  isFetch_Data,
+  metaData_Category,
+  HandleDeviceScreen,
+  deviceType,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortCriteria, setSortCriteria] = useState({ field: "", order: "" });
   const [categoryFilter, setCategoryFilter] = useState("ALL");
@@ -55,6 +61,15 @@ const Itemlist = ({ isFetch_Data, metaData_Category }) => {
   return (
     <div className="w-full h-full">
       <div className="flex items-center gap-2">
+        {deviceType && (
+          <button
+            onClick={() => HandleDeviceScreen()}
+            className=" flex gap-1 shrink-0 items-center MainBgColor p-1 text-white rounded-md hover:shadow-md"
+          >
+            <span>ADD ITEMS</span> <FiPlus />
+          </button>
+        )}
+
         <div>
           <select
             required
