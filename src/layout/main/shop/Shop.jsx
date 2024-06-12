@@ -71,7 +71,7 @@ const Shop = ({ isFetch_Data, metaData_Category }) => {
         setopenCart={setopenCart}
       />
 
-      <div className="flex gap-10 flex-wrap w-full px-2 h-full overflow-y-auto overflow-x-hidden py-3">
+      <div className="flex gap-6 flex-wrap w-full px-2 h-full overflow-y-auto overflow-x-hidden py-3">
         {categoryFilteredData.length !== 0 ? (
           <>
             {categoryFilteredData.map((item, index) => (

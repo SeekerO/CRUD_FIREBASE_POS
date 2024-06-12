@@ -6,8 +6,12 @@ const Dashboard = ({ isFetch_Data, metaData_Category, isMobile }) => {
   const [openAddItems, setopenAddItems] = useState(false);
 
   const HandleDeviceScreen = () => {
-    if (isMobile) setopenAddItems(!openAddItems);
+    setopenAddItems(!openAddItems);
   };
+
+  useEffect(() => {
+    if (isMobile) setopenAddItems(true);
+  }, []);
 
   return (
     <div className="w-full h-full bg-slate-200 rounded-md p-2 flex flex-col">
@@ -15,11 +19,7 @@ const Dashboard = ({ isFetch_Data, metaData_Category, isMobile }) => {
 
       <main className="mt-4 gap-2 h-full flex">
         {/* ADD ITEMS */}
-        <div
-          className={`${
-            isMobile ? `${openAddItems && "hidden"}` : "visibe"
-          } h-full`}
-        >
+        <div className={`${openAddItems ? `hidden` : "visibe"} h-full flex`}>
           <AddItems
             metaData_Category={metaData_Category}
             HandleDeviceScreen={HandleDeviceScreen}

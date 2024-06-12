@@ -3,6 +3,7 @@ import SearchBar from "../../../../components/SearchBar";
 import { FaSort } from "react-icons/fa";
 import ItemConfig from "./itemconfig/ItemConfig";
 import { FiPlus } from "react-icons/fi";
+import { isMobile } from "react-device-detect";
 
 const Itemlist = ({
   isFetch_Data,
@@ -59,9 +60,9 @@ const Itemlist = ({
   });
 
   return (
-    <div className="w-full h-full">
-      <div className="flex items-center gap-2">
-        {deviceType && (
+    <div className="md:w-full w-auto h-full flex flex-col">
+      <div className="flex items-center gap-2 flex-wrap">
+        {isMobile && (
           <button
             onClick={() => HandleDeviceScreen()}
             className=" flex gap-1 shrink-0 items-center MainBgColor p-1 text-white rounded-md hover:shadow-md"
@@ -87,7 +88,9 @@ const Itemlist = ({
           </select>
         </div>
 
-        <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
+        <div className="w-full">
+          <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
+        </div>
       </div>
 
       <div className="mt-2 w-full px-2 grid items-center grid-cols-4 justify-between MainBgColor rounded-md py-2 font-semibold text-white">
@@ -107,7 +110,7 @@ const Itemlist = ({
         </span>
       </div>
 
-      <div>
+      <div className="flex flex-col h-[65vh] overflow-y-auto overflow-x-hidden">
         {sortedData.length === 0 ? (
           <>NO DATA</>
         ) : (

@@ -12,6 +12,7 @@ import { MdDelete } from "react-icons/md";
 import SizePicker from "../component_dashboard/SizePicker";
 import { NotifyWarning } from "../../../../components/Notify";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
+import { isMobile } from "react-device-detect";
 
 const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
   const [addCategory, setaddCategory] = useState(false);
@@ -29,7 +30,7 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
 
   useEffect(() => {
     set_meta_data_state(metaData_Category);
-  }, [metaData_Category]);
+  }, [addCategory, metaData_Category]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -106,9 +107,9 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
   };
 
   return (
-    <div className="w-[500px] h-full py-5 px-1 bg-slate-300 rounded-md shadow-md flex flex-col items-center">
+    <div className="w-fit h-full py-5 px-1 bg-slate-300 rounded-md shadow-md flex flex-col items-center">
       <div className="flex w-full items-center">
-        {deviceType && (
+        {isMobile && (
           <MdOutlineArrowBackIosNew
             className="text-[30px] cursor-pointer hover:text-blue-500"
             onClick={() => HandleDeviceScreen()}
@@ -120,7 +121,7 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
         </label>
       </div>
 
-      <form className="px-2 mt-5 space-y-3 w-full h-[70vh] overflow-y-auto">
+      <form className="px-2 mt-5 space-y-3 w-full h-[70vh] overflow-y-auto flex-flex-col">
         <div className="gap-1 flex items-center justify-between">
           <label>CATEGORY:</label>
           <div className="flex items-center justify-between">

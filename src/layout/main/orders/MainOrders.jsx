@@ -49,20 +49,24 @@ const MainOrders = () => {
 
   return (
     <div className="flex flex-col h-full w-full">
-      <div className="flex gap-4">
-        <div className="w-fit h-[100px] MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
+      <div className="flex gap-4 flex-wrap">
+        <div className="w-fit h-auto MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
           <span className="font-bold text-[20px] mr-10">TODAY SALES</span>
           <span className="mt-1 flex gap-1 items-center text-[30px]">
-            <FaPesoSign /> <span>{sales.totalSales}</span>
+            <FaPesoSign />{" "}
+            <span>{parseFloat(sales.todaySales).toFixed(2)}</span>
           </span>
         </div>
-        <div className="w-fit h-[100px] MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
-          <span className="font-bold text-[20px] mr-10">AVG. MONTHLY SALES</span>
+        <div className="w-fit h-auto  MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
+          <span className="font-bold text-[20px] mr-10">
+            AVG. MONTHLY SALES
+          </span>
           <span className="mt-1 flex gap-1 items-center text-[30px]">
-            <FaPesoSign /> <span>{sales.AvgMonthSales}</span>
+            <FaPesoSign />{" "}
+            <span>{parseFloat(sales.AvgMonthSales).toFixed(2)}</span>
           </span>
         </div>
-        <div className="w-fit h-[100px] MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
+        <div className="w-fit h-auto MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
           <span className="font-bold text-[20px] mr-10">TOTAL SALES</span>
           <span className="mt-1 flex gap-1 items-center text-[30px]">
             <FaPesoSign /> <span>{sales.totalSales}</span>
