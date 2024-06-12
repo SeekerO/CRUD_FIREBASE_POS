@@ -5,8 +5,11 @@ import { FaPesoSign } from "react-icons/fa6";
 import moment from "moment";
 const MainOrders = () => {
   const [orders, setOrders] = useState([]);
-  const [todaySales, setTodaySales] = useState(0);
-  const [totalSales, setTotalSales] = useState(0);
+  const [sales, setSales] = useState({
+    todaySales: 0,
+    AvgMonthSales: 0,
+    totalSales: 0,
+  });
 
   useEffect(() => {
     const fetch = async () => {
@@ -35,23 +38,34 @@ const MainOrders = () => {
       0
     );
 
-    setTodaySales(todaySales);
-    setTotalSales(totalSales);
+    const averageMonthSales = totalSales / 12;
+
+    setSales({
+      todaySales: todaySales,
+      AvgMonthSales: averageMonthSales,
+      totalSales: totalSales,
+    });
   };
 
   return (
     <div className="flex flex-col h-full w-full">
       <div className="flex gap-4">
-        <div className="w-[300px] h-[100px] MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
-          <span className="font-bold text-[20px]">TODAY SALES</span>
+        <div className="w-fit h-[100px] MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
+          <span className="font-bold text-[20px] mr-10">TODAY SALES</span>
           <span className="mt-1 flex gap-1 items-center text-[30px]">
-            <FaPesoSign /> <span>{todaySales}</span>
+            <FaPesoSign /> <span>{sales.totalSales}</span>
           </span>
         </div>
-        <div className="w-[300px] h-[100px] MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
-          <span className="font-bold text-[20px]">TOTAL SALES</span>
+        <div className="w-fit h-[100px] MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
+          <span className="font-bold text-[20px] mr-10">AVG. MONTHLY SALES</span>
           <span className="mt-1 flex gap-1 items-center text-[30px]">
-            <FaPesoSign /> <span>{totalSales}</span>
+            <FaPesoSign /> <span>{sales.AvgMonthSales}</span>
+          </span>
+        </div>
+        <div className="w-fit h-[100px] MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
+          <span className="font-bold text-[20px] mr-10">TOTAL SALES</span>
+          <span className="mt-1 flex gap-1 items-center text-[30px]">
+            <FaPesoSign /> <span>{sales.totalSales}</span>
           </span>
         </div>
       </div>
