@@ -12,6 +12,7 @@ import { MdDelete } from "react-icons/md";
 import { NotifyWarning } from "../../../../components/Notify";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { isMobile } from "react-device-detect";
+import { BsPlusCircle } from "react-icons/bs";
 
 const AddItems = ({ metaData_Category, HandleDeviceScreen }) => {
   const [addCategory, setaddCategory] = useState(false);
@@ -246,12 +247,12 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen }) => {
               </>
             )}
             <div className="flex items-center gap-2">
-              <span>Optional:</span>
+              <span>Optional Add Size:</span>
               <button
                 onClick={addSize}
-                className="px-2 py-1 bg-green-500 text-white rounded-md"
+                className="px-2 py-1 MainBgColor hover:shadow-lg duration-300 text-white rounded-md"
               >
-                Add Size
+                <BsPlusCircle />
               </button>
             </div>
             {sizesPrice.map((item, index) => (

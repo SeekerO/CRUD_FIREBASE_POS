@@ -5,12 +5,7 @@ import ItemConfig from "./itemconfig/ItemConfig";
 import { FiPlus } from "react-icons/fi";
 import { isMobile } from "react-device-detect";
 
-const Itemlist = ({
-  isFetch_Data,
-  metaData_Category,
-  HandleDeviceScreen,
-  deviceType,
-}) => {
+const Itemlist = ({ isFetch_Data, metaData_Category, HandleDeviceScreen }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortCriteria, setSortCriteria] = useState({ field: "", order: "" });
   const [categoryFilter, setCategoryFilter] = useState("ALL");
@@ -26,13 +21,13 @@ const Itemlist = ({
 
     return data.filter(
       (item) =>
-        item.item_category.toLowerCase() === categoryFilter.toLowerCase()
+        item.item_category?.toLowerCase() === categoryFilter?.toLowerCase()
     );
   };
 
   const filteredData = isFetch_Data?.filter((meta_data) => {
-    const search = searchTerm.toLowerCase();
-    return meta_data.item_name.toLowerCase().includes(search);
+    const search = searchTerm?.toLowerCase();
+    return meta_data.item_name?.toLowerCase().includes(search);
   });
 
   const categoryFilteredData = filter_data_by_category(filteredData);

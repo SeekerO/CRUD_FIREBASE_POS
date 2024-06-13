@@ -18,7 +18,10 @@ const ItemConfig = ({ item, index, metaData_Category }) => {
   return (
     <>
       <div className="flex MainBgColor w-full mt-1  rounded-md py-2 font-semibold text-white hover:py-3 duration-300 ">
-        <div className="w-full cursor-pointer" onClick={() => setisEdit(!isEdit)}>
+        <div
+          className="w-full cursor-pointer"
+          onClick={() => setisEdit(!isEdit)}
+        >
           <div
             key={index}
             className=" w-full px-2 grid items-center grid-cols-4 justify-between "
@@ -35,7 +38,10 @@ const ItemConfig = ({ item, index, metaData_Category }) => {
           </div>
 
           {item.item_sizes?.map((sizes, index) => (
-            <div className="grid items-center grid-cols-4 font-thin px-2">
+            <div
+              key={index}
+              className="grid items-center grid-cols-4 font-thin px-2"
+            >
               <label></label>
               <label className="pl-2">{sizes.size}</label>
               <label>{sizes.price}</label>

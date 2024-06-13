@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { GrDocumentUpdate } from "react-icons/gr";
 import { updateItem } from "../../../../../components/firebase";
+import { NotifyWarning } from "../../../../../components/Notify";
 
 const ItemModalUpdate = ({ item, setisEdit, isEdit, metaData_Category }) => {
   const [formData, setformData] = useState({
@@ -37,10 +38,23 @@ const ItemModalUpdate = ({ item, setisEdit, isEdit, metaData_Category }) => {
       [name]: value,
     });
   };
-  const handleUpdate = async () => {
-    const updatedData = { ...formData, item_sizes: sizesPrice };
-    await updateItem(item.id, updatedData);
-    setisEdit(false);
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    if (
+      (sizesPrice.length === 0 &&
+        formData.item_price !== "" &&
+        formData.item_quantity !== "") ||
+      (sizesPrice.length !== 0 &&
+        formData.item_price === "" &&
+        formData.item_quantity === "")
+    ) {
+      const updatedData = { ...formData, item_sizes: sizesPrice };
+      await updateItem(item.id, updatedData);
+      setisEdit(false);
+    } else {
+      const warning = "Cannot update..";
+      NotifyWarning(warning);
+    }
   };
 
   const addSize = (e) => {
@@ -65,6 +79,14 @@ const ItemModalUpdate = ({ item, setisEdit, isEdit, metaData_Category }) => {
 
   const handleCheckboxChange = () => {
     setOptional(!isOptional);
+    setformData({
+      ...formData,
+      item_name: formData.item_name,
+      item_price: "",
+      item_quantity: "",
+      item_category: formData.item_category,
+    });
+    setSizesPrice([]);
   };
 
   if (!isEdit) return null;
@@ -177,18 +199,36 @@ const ItemModalUpdate = ({ item, setisEdit, isEdit, metaData_Category }) => {
                         className="w-[100px] px-1 py-1 rounded-md"
                       />
                       <input
-                        type="text"
+                        type="number"
                         placeholder="Price"
                         value={item.price}
+                        onKeyDown={(e) => {
+                          if (
+                            !/[0-9]/.test(e.key) &&
+                            e.key !== "." &&
+                            e.key !== "Backspace"
+                          ) {
+                            e.preventDefault();
+                          }
+                        }}
                         onChange={(e) =>
                           updateSize(index, "price", e.target.value)
                         }
                         className="w-[100px] px-1 py-1 rounded-md"
                       />
                       <input
-                        type="text"
+                        type="number"
                         placeholder="Stock"
                         value={item.stock}
+                        onKeyDown={(e) => {
+                          if (
+                            !/[0-9]/.test(e.key) &&
+                            e.key !== "." &&
+                            e.key !== "Backspace"
+                          ) {
+                            e.preventDefault();
+                          }
+                        }}
                         onChange={(e) =>
                           updateSize(index, "stock", e.target.value)
                         }
