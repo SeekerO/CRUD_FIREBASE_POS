@@ -111,12 +111,12 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
       <div className="flex w-full items-center">
         {isMobile && (
           <MdOutlineArrowBackIosNew
-            className="text-[30px] cursor-pointer hover:text-blue-500"
+            className="text-[25px] cursor-pointer hover:text-blue-500"
             onClick={() => HandleDeviceScreen()}
           />
         )}
 
-        <label className="w-full mt-4 font-semibold text-[18px] underline underline-offset-2">
+        <label className="w-full font-semibold text-[18px] underline underline-offset-2">
           ADD ITEMS
         </label>
       </div>
