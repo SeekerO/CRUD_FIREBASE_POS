@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import { isMobile } from "react-device-detect";
 function App() {
   return (
-    <div className="w-screen h-screen bg-slate-100 flex overflow-hidden">
+    <div className="w-screen h-screen bg-slate-100 flex overflow-hidden MainBgColor">
       <Sidebar isMobile={isMobile} />
 
       <Mainlayout isMobile={isMobile} />

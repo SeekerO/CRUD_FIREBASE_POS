@@ -19,8 +19,8 @@ const Sidebar = ({ isMobile }) => {
   return (
     <div
       className={`${
-        expandMenu ? "w-[250px]" : "w-fit bg-slate-300"
-      } h-full bg-slate-100`}
+        expandMenu ? "w-[250px] MainBgColor" : "w-fit MainBgColor"
+      } h-full MainBgColor text-white`}
     >
       <div
         className={`${
@@ -35,7 +35,7 @@ const Sidebar = ({ isMobile }) => {
               viewBox="0 0 1782 343"
               width="100"
               height="35"
-              fill="#25AE9C"
+              fill="white"
             >
               <path d="m293 343l-94-98c0 0-14.2 14-48 14-33.8 0-61.8-18.6-69-38 0 0-5.9 3-15 3-9.1 0-67-8.8-67-70 0-71.6 86.7-154 192-154 121 0 197 100 197 169 0 43.2-26.7 51-32 51 0 0 10.8 54.3-80 62"></path>
               <path d="m427 20h48v164c0 0 1 56 61 56 45.1 0 59-36.1 59-58 0-14.8 0-162 0-162h48v159c0 0 2.7 107-108 107-107.4 0-108-101.8-108-105 0-15 0-161 0-161z"></path>
@@ -63,7 +63,7 @@ const Sidebar = ({ isMobile }) => {
             key={index}
             className={`${
               expandMenu ? "ml-3" : "ml-1"
-            } flex  items-center gap-2 text-[18px] uppercase p-3 mt-1 font-semibold hover:bg-[#25AE9C] hover:rounded-l-md hover:text-white cursor-pointer  duration-300 hover:scale-105 `}
+            } flex  items-center gap-2 text-[18px] uppercase p-3 mt-1 font-semibold  hover:rounded-l-md hover:text-white cursor-pointer  duration-300 hover:scale-105 `}
           >
             {sidebar.icons}
             {expandMenu && (

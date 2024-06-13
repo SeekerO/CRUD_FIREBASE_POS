@@ -69,7 +69,7 @@ const Mainlayout = () => {
   }, []);
 
   return (
-    <div className="w-full h-full bg-slate-100 md:px-10  px-2 py-5">
+    <div className="w-full h-full bg-slate-100 md:px-10  px-2 py-5 rounded-l-[25px] shadow-2xl shadow-gray-800">
       <Suspense fallback={"Loading..."}>
         <Routes>
           <Route
