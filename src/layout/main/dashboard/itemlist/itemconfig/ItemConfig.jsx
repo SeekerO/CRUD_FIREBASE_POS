@@ -17,37 +17,36 @@ const ItemConfig = ({ item, index, metaData_Category }) => {
 
   return (
     <>
-      <div className="MainBgColor flex flex-col w-full mt-1  rounded-md py-2 font-semibold text-white hover:py-3 duration-300 ">
-        <div
-          key={index}
-          className=" w-full px-2 grid items-center grid-cols-4 justify-between "
-        >
-          <label className="w-[100px]">{index + 1}</label>
-          <label className="truncate overflow-hidden">{item.item_name}</label>
-          <label>{item.item_price}</label>
-          <div className="w-full justify-between flex items-center">
-            <label>{item.item_quantity}</label>
-            <div className="flex gap-2 text-[25px]">
-              <FiEdit
-                onClick={() => setisEdit(!isEdit)}
-                className="hover:text-blue-500 cursor-pointer"
-              />
-              <MdDelete
-                onClick={() => setisDelete(!isDelete)}
-                className="hover:text-red-500 cursor-pointer"
-              />
+      <div className="flex MainBgColor w-full mt-1  rounded-md py-2 font-semibold text-white hover:py-3 duration-300 ">
+        <div className="w-full cursor-pointer" onClick={() => setisEdit(!isEdit)}>
+          <div
+            key={index}
+            className=" w-full px-2 grid items-center grid-cols-4 justify-between "
+          >
+            <label className="w-[100px]">{index + 1}</label>
+            <label className="truncate overflow-hidden">{item.item_name}</label>
+            <label>{item.item_price}</label>
+            <div className="w-full justify-between flex items-center">
+              <label>{item.item_quantity}</label>
+              <div className="flex gap-2 text-[25px]">
+                <FiEdit className="hover:text-blue-500 cursor-pointer" />
+              </div>
             </div>
           </div>
-        </div>
 
-        {item.item_sizes?.map((sizes, index) => (
-          <div className="grid items-center grid-cols-4 font-thin px-2">
-            <label></label>
-            <label className="pl-2">{sizes.size}</label>
-            <label>{sizes.price}</label>
-            <label>{sizes.stock}</label>
-          </div>
-        ))}
+          {item.item_sizes?.map((sizes, index) => (
+            <div className="grid items-center grid-cols-4 font-thin px-2">
+              <label></label>
+              <label className="pl-2">{sizes.size}</label>
+              <label>{sizes.price}</label>
+              <label>{sizes.stock}</label>
+            </div>
+          ))}
+        </div>
+        <MdDelete
+          onClick={() => setisDelete(!isDelete)}
+          className="hover:text-red-500 cursor-pointer text-[25px]"
+        />
       </div>
 
       {isDelete && (
