@@ -42,31 +42,50 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen }) => {
 
   const saveItem_database = (e) => {
     e.preventDefault();
-    var saveUUID = uuidv4();
+    const saveUUID = uuidv4();
 
-    if (formData.item_category !== "" && formData.item_name !== "") {
-      if (
-        (formData.item_price !== "" && formData.item_quantity !== "") ||
-        sizesPrice.length !== 0
-      ) {
-        writeNewItem(formData, saveUUID, setFormData, sizesPrice);
-        setFormData({
-          item_name: "",
-          item_price: "",
-          item_quantity: "",
-          item_category: "",
-        });
-        setisOptional(false);
-        setSizesPrice([]);
-        setCategories("");
-      } else {
-        const warning = "Please fill the a price and quantity";
-        NotifyWarning(warning);
-      }
-    } else {
-      const warning = "Please select a category and name";
-      NotifyWarning(warning);
+    const isFormDataValid =
+      formData.item_category !== "" && formData.item_name !== "";
+
+    const isPriceAndQuantityValid =
+      formData.item_price !== "" && formData.item_quantity !== "";
+
+    const isSizesPriceValid =
+      sizesPrice.length === 0 ||
+      sizesPrice.every(
+        (size) =>
+          (size?.stock?.trim() ?? "") !== "" &&
+          (size?.price?.trim() ?? "") !== "" &&
+          (size?.size?.trim() ?? "") !== ""
+      );
+
+    if (!isFormDataValid) {
+      NotifyWarning("Please select a category and name");
+      return;
     }
+
+    if (!isPriceAndQuantityValid && sizesPrice.length === 0) {
+      NotifyWarning("Please fill the price and quantity");
+      return;
+    }
+
+    if (sizesPrice.length !== 0 && !isSizesPriceValid) {
+      NotifyWarning("Please fill all the size and price fields");
+      return;
+    }
+
+    writeNewItem(formData, saveUUID, setFormData, sizesPrice);
+
+    // Reset form data and states
+    setFormData({
+      item_name: "",
+      item_price: "",
+      item_quantity: "",
+      item_category: "",
+    });
+    setisOptional(false);
+    setSizesPrice([]);
+    setCategories("");
   };
 
   const savecategory_databse = (e) => {
@@ -261,6 +280,7 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen }) => {
                   type="text"
                   placeholder="Size"
                   value={item.size}
+                  name="size"
                   onChange={(e) => updateSize(index, "size", e.target.value)}
                   className="w-[70px] px-1 py-1 rounded-md"
                 />
@@ -268,6 +288,16 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen }) => {
                   type="text"
                   placeholder="Price"
                   value={item.price}
+                  name="price"
+                  onKeyDown={(e) => {
+                    if (
+                      !/[0-9]/.test(e.key) &&
+                      e.key !== "." &&
+                      e.key !== "Backspace"
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
                   onChange={(e) => updateSize(index, "price", e.target.value)}
                   className="w-[70px] px-1 py-1 rounded-md"
                 />
@@ -275,6 +305,16 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen }) => {
                   type="text"
                   placeholder="Stock"
                   value={item.stock}
+                  name="stock"
+                  onKeyDown={(e) => {
+                    if (
+                      !/[0-9]/.test(e.key) &&
+                      e.key !== "." &&
+                      e.key !== "Backspace"
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
                   onChange={(e) => updateSize(index, "stock", e.target.value)}
                   className="w-[70px] px-1 py-1 rounded-md"
                 />

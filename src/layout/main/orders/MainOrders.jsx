@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { readDataOrders } from "../../../components/firebase";
+import { readDataOrders, listenForOrders } from "../../../components/firebase";
 import Orderconfig from "./orderConfig/Orderconfig";
 import { FaPesoSign } from "react-icons/fa6";
 import moment from "moment";
@@ -24,6 +24,14 @@ const MainOrders = () => {
       }
     };
     fetch();
+  }, [orders]);
+
+  useEffect(() => {
+    const handleNewItem = (item) => {
+      setOrders((orders) => [...orders, item]);
+    };
+
+    listenForOrders(handleNewItem);
   }, []);
 
   const calculateSales = (ordersArray) => {

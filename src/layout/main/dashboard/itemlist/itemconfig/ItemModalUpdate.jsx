@@ -38,23 +38,43 @@ const ItemModalUpdate = ({ item, setisEdit, isEdit, metaData_Category }) => {
       [name]: value,
     });
   };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
-    if (
-      (sizesPrice.length === 0 &&
-        formData.item_price !== "" &&
-        formData.item_quantity !== "") ||
-      (sizesPrice.length !== 0 &&
-        formData.item_price === "" &&
-        formData.item_quantity === "")
-    ) {
-      const updatedData = { ...formData, item_sizes: sizesPrice };
-      await updateItem(item.id, updatedData);
-      setisEdit(false);
-    } else {
-      const warning = "Cannot update..";
-      NotifyWarning(warning);
+
+    const isCategoryNameValid =
+      formData.item_category.trim() !== "" && formData.item_name.trim() !== "";
+
+    const priceQtyIsValid =
+      formData.item_price.trim() !== "" && formData.item_quantity.trim() !== "";
+
+    const isSizesPriceValid =
+      sizesPrice.length === 0 ||
+      sizesPrice.every(
+        (size) =>
+          (size?.stock?.trim() ?? "") !== "" &&
+          (size?.price?.trim() ?? "") !== "" &&
+          (size?.size?.trim() ?? "") !== ""
+      );
+
+    if (!isCategoryNameValid) {
+      NotifyWarning("Please select a category and provide a name");
+      return;
     }
+
+    if (!priceQtyIsValid && sizesPrice.length === 0) {
+      NotifyWarning("Please fill in both price and quantity");
+      return;
+    }
+
+    if (sizesPrice.length !== 0 && !isSizesPriceValid) {
+      NotifyWarning("Please fill in all size, stock, and price fields");
+      return;
+    }
+
+    const updatedData = { ...formData, item_sizes: sizesPrice };
+    await updateItem(item.id, updatedData);
+    setisEdit(false);
   };
 
   const addSize = (e) => {
@@ -193,6 +213,7 @@ const ItemModalUpdate = ({ item, setisEdit, isEdit, metaData_Category }) => {
                         type="text"
                         placeholder="Size"
                         value={item.size}
+                        name="size"
                         onChange={(e) =>
                           updateSize(index, "size", e.target.value)
                         }
@@ -202,6 +223,7 @@ const ItemModalUpdate = ({ item, setisEdit, isEdit, metaData_Category }) => {
                         type="number"
                         placeholder="Price"
                         value={item.price}
+                        name="price"
                         onKeyDown={(e) => {
                           if (
                             !/[0-9]/.test(e.key) &&
@@ -220,6 +242,7 @@ const ItemModalUpdate = ({ item, setisEdit, isEdit, metaData_Category }) => {
                         type="number"
                         placeholder="Stock"
                         value={item.stock}
+                        name="stock"
                         onKeyDown={(e) => {
                           if (
                             !/[0-9]/.test(e.key) &&

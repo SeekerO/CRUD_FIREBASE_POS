@@ -105,10 +105,7 @@ const Mainlayout = () => {
               />
             }
           />
-          <Route
-            path="/orders"
-            element={<Orders isFetch_Data={isFetch_Data} />}
-          />
+          <Route path="/orders" element={<Orders />} />
         </Routes>
       </Suspense>
     </div>

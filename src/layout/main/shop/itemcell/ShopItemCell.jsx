@@ -10,11 +10,20 @@ const ItemCell = ({ item, isAddToCart, setAddToCart }) => {
         onClick={() => setopenaddToCart(!openaddToCart)}
         className="w-[200px] h-[200px] MainBgColor text-white rounded-md p-2 flex flex-col shadow-md select-none cursor-pointer hover:scale-105 duration-300"
       >
-        <label className="font-semibold text-[25px] cursor-pointer">{item.item_name}</label>
+        <label className="font-semibold text-[25px] cursor-pointer">
+          {item.item_name}
+        </label>
         {item.item_price !== "" && item.item_quantity !== "" && (
           <>
-            <label className="text-[20px] cursor-pointer">₱ {item.item_price}</label>
-            <em className="text-[15px] flex gap-1 mt-1 text-gray-100 cursor-pointer">
+            <label className="text-[20px] cursor-pointer">
+              ₱ {item.item_price}
+            </label>
+
+            <em
+              className={`${
+                item.item_quantity === 0 && "text-red-600 font-bold"
+              } text-[15px] flex gap-1 mt-1 text-gray-100`}
+            >
               In Stock <span>{item.item_quantity}</span>
             </em>
           </>
@@ -26,7 +35,11 @@ const ItemCell = ({ item, isAddToCart, setAddToCart }) => {
               <span className="text-[20px]">{item.size} </span>
               <span>₱{item.price} </span>
             </div>
-            <em className="text-[10px] flex gap-1 mt-1 text-gray-100">
+            <em
+              className={`${
+                item.stock === 0 && "text-red-600 font-bold"
+              } text-[10px] flex gap-1 mt-1 text-gray-100`}
+            >
               In Stock <span>{item.stock}</span>
             </em>
           </div>

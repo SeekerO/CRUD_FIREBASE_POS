@@ -134,8 +134,6 @@ export async function handlePaid(items) {
         }
       }
     }
-
-    console.log("Stock quantities updated successfully.");
   } catch (error) {
     console.error("Error updating stock quantities: ", error);
   }
@@ -146,6 +144,20 @@ export async function handlePaid(items) {
 
 export function listenForNewItems(callback) {
   const itemsRef = ref(database, "shop_item");
+
+  onChildAdded(
+    itemsRef,
+    (data) => {
+      callback(data.val());
+    },
+    (error) => {
+      console.error("Failed to listen for new items:", error);
+    }
+  );
+}
+
+export function listenForOrders(callback) {
+  const itemsRef = ref(database, "orders");
 
   onChildAdded(
     itemsRef,
@@ -182,6 +194,14 @@ export function listenForItemUpdates(callback) {
 
 export function listenForItemCategory(callback) {
   const dbRef = ref(database, "category");
+  onValue(dbRef, (snapshot) => {
+    const data = snapshot?.val() ? Object.values(snapshot.val()) : [];
+    callback(data);
+  });
+}
+
+export function listenForShop(callback) {
+  const dbRef = ref(database, "shop");
   onValue(dbRef, (snapshot) => {
     const data = snapshot?.val() ? Object.values(snapshot.val()) : [];
     callback(data);
