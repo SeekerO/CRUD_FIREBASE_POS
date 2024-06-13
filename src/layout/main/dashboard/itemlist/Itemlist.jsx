@@ -24,7 +24,10 @@ const Itemlist = ({
       return data;
     }
 
-    return data.filter((item) => item.item_category === categoryFilter);
+    return data.filter(
+      (item) =>
+        item.item_category.toLowerCase() === categoryFilter.toLowerCase()
+    );
   };
 
   const filteredData = isFetch_Data?.filter((meta_data) => {
@@ -81,7 +84,7 @@ const Itemlist = ({
           <option value="ALL">ALL</option>
           {metaData_Category.map((cate, index) => (
             <option key={index} value={cate.category} className="lowercase">
-              {cate.category}
+              {cate.category.toUpperCase()}
             </option>
           ))}
         </select>

@@ -71,8 +71,13 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen }) => {
   const savecategory_databse = (e) => {
     e.preventDefault();
     const saveUUID = uuidv4();
-    writeDataCategory(inputCatergories, saveUUID);
-    setCategories(""); // Clear category input
+    if (inputCatergories.trim() === "") {
+      const warning = "Fill categories..";
+      return NotifyWarning(warning);
+    } else {
+      writeDataCategory(inputCatergories, saveUUID);
+      setCategories(""); // Clear category input
+    }
   };
 
   const handleRemoveItem = (id) => {
@@ -127,7 +132,7 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen }) => {
             <div className="flex items-center justify-between">
               {addCategory ? (
                 <div className="flex flex-col w-full h-full">
-                  <div className="w-full flex">
+                  <form className="w-full flex">
                     <input
                       required
                       type="text"
@@ -140,7 +145,7 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen }) => {
                       onClick={() => setaddCategory(!addCategory)}
                       className="text-[30px] MainTextColor hover:text-blue-600 cursor-pointer"
                     />
-                  </div>
+                  </form>
                 </div>
               ) : (
                 <>
@@ -288,7 +293,7 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen }) => {
             {metaData_Category.length === meta_data_state.length ? (
               <button
                 onClick={savecategory_databse}
-                className="w-full p-2 MainBgColor rounded-md flex gap-1 items-center justify-center mt-3 hover:text-slate-100 hover:shadow-md"
+                className="w-full p-2 MainBgColor rounded-md flex gap-1 items-center justify-center mt-3 hover:text-black text-white hover:shadow-md"
               >
                 ADD CATEGORY <TbCategoryPlus className="text-[20px]" />
               </button>
@@ -304,7 +309,7 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen }) => {
         ) : (
           <button
             onClick={saveItem_database}
-            className="w-full p-2 MainBgColor rounded-md flex gap-1 items-center justify-center mt-3 hover:text-slate-100 hover:shadow-md"
+            className="w-full p-2 MainBgColor rounded-md flex gap-1 items-center justify-center mt-3 hover:text-black text-white hover:shadow-md"
           >
             ADD ITEM <IoAdd className="text-[20px]" />
           </button>

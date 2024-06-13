@@ -19,7 +19,10 @@ const Shop = ({ isFetch_Data, metaData_Category }) => {
       return data;
     }
 
-    return data.filter((item) => item.item_category === categoryFilter);
+    return data.filter(
+      (item) =>
+        item.item_category.toLowerCase() === categoryFilter.toLowerCase()
+    );
   };
 
   const filteredData = isFetch_Data?.filter((meta_data) => {
