@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 const Sidebar = ({ isMobile }) => {
   const [expandMenu, setexpandMenu] = useState(true);
   const [focusOn, setfocusOn] = useState("DashBoard");
+
   const SideBaritems = [
     { item: "DashBoard", icons: <MdDashboard />, to: "/" },
     { item: "Shop", icons: <FaBasketShopping />, to: "/shop" },

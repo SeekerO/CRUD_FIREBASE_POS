@@ -14,28 +14,29 @@ const Dashboard = ({ isFetch_Data, metaData_Category, isMobile }) => {
   }, []);
 
   return (
-    <div className="w-full h-full rounded-md p-2 flex flex-col">
-      <h1 className="Title">DASHBOARD</h1>
-
-      <main className="mt-4 gap-2 h-full flex">
-        {/* ADD ITEMS */}
-        <div className={`${openAddItems ? `hidden` : "visibe"} h-full flex`}>
-          <AddItems
-            metaData_Category={metaData_Category}
-            HandleDeviceScreen={HandleDeviceScreen}
-            deviceType={isMobile}
-          />
-        </div>
-
-        {/* ITEM LIST */}
-
-        <Itemlist
-          isFetch_Data={isFetch_Data}
+    <div className="w-full h-full rounded-md p-2 flex gap-2">
+      {/* ADD ITEMS */}
+      <div
+        className={`${openAddItems ? `hidden` : "visibe"} h-full flex flex-col`}
+      >
+        <span className="MainTextColor font-semibold text-[30px] text-start w-full tracking-wide">
+          DASHBOARD
+        </span>{" "}
+        <AddItems
           metaData_Category={metaData_Category}
           HandleDeviceScreen={HandleDeviceScreen}
           deviceType={isMobile}
         />
-      </main>
+      </div>
+
+      {/* ITEM LIST */}
+
+      <Itemlist
+        isFetch_Data={isFetch_Data}
+        metaData_Category={metaData_Category}
+        HandleDeviceScreen={HandleDeviceScreen}
+        deviceType={isMobile}
+      />
     </div>
   );
 };

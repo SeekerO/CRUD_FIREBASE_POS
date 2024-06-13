@@ -116,12 +116,11 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
           />
         )}
 
-        <label className="w-full text-center font-semibold text-[20px] underline underline-offset-2">
+        <label className="w-full mt-4 font-semibold text-[18px] underline underline-offset-2">
           ADD ITEMS
         </label>
       </div>
-
-      <form className="px-2 mt-5 space-y-3 w-full h-[70vh] overflow-y-auto flex-flex-col">
+      <form className="px-2 mt-5 space-y-3 w-full  overflow-y-auto flex-flex-col">
         <div className="gap-1 flex items-center justify-between">
           <label>CATEGORY:</label>
           <div className="flex items-center justify-between">

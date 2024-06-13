@@ -75,7 +75,7 @@ const MainOrders = () => {
         </div>
       </div>
       <h1 className="font-semibold MainTextColor text-[30px]">Recent Orders</h1>
-      <div className="w-full h-full overflow-y-auto text-black">
+      <div className="w-full h-full overflow-y-auto text-black ">
         {orders
           .sort((a, b) => (a.order_date < b.order_date ? 1 : -1))
           .map((item, index) => (

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-
+import moment from "moment";
 const Orderconfig = ({ item }) => {
   const [expandCell, setexpandCell] = useState(false);
   const ref = useRef(null);
@@ -26,12 +26,12 @@ const Orderconfig = ({ item }) => {
       } select-none flex flex-col gap-2 bg-slate-200 mt-2 p-2 rounded-md duration-300 active:bg-slate-400 active:text-white cursor-pointer overflow-hidden`}
     >
       <span className="gap-1 flex">
-        <span className="font-semibold">ID:</span>
+        <span className="font-semibold">UUID:</span>
         <span> {item.id}</span>
       </span>
       <span className="gap-1 flex">
         <span className="font-semibold">DATE:</span>
-        <span> {item.order_date}</span>
+        <span>{moment(item.order_date).format("MMMM Do YYYY, h:mm a")}</span>
       </span>
       {expandCell && (
         <div className="h-full overflow-y-auto">

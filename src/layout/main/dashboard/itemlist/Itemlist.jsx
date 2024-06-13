@@ -60,8 +60,8 @@ const Itemlist = ({
   });
 
   return (
-    <div className="md:w-full w-auto h-full flex flex-col">
-      <div className="flex items-center gap-2 flex-wrap">
+    <div className="h-full w-full flex flex-col">
+      <div className="flex items-center gap-2 w-fit">
         {isMobile && (
           <button
             onClick={() => HandleDeviceScreen()}
@@ -71,60 +71,54 @@ const Itemlist = ({
           </button>
         )}
 
-        <div>
-          <select
-            required
-            className="p-1 outline-none rounded-md border-2 border-slate-300"
-            name="item_category"
-            onChange={handleCategoryChange}
-            value={categoryFilter}
-          >
-            <option value="ALL">ALL</option>
-            {metaData_Category.map((cate, index) => (
-              <option key={index} value={cate.category} className="lowercase">
-                {cate.category}
-              </option>
-            ))}
-          </select>
-        </div>
+        <select
+          required
+          className="p-1 outline-none rounded-md border-2 border-slate-300"
+          name="item_category"
+          onChange={handleCategoryChange}
+          value={categoryFilter}
+        >
+          <option value="ALL">ALL</option>
+          {metaData_Category.map((cate, index) => (
+            <option key={index} value={cate.category} className="lowercase">
+              {cate.category}
+            </option>
+          ))}
+        </select>
 
         <div className="w-full">
           <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
         </div>
       </div>
 
-      <div className="mt-2 w-full px-2 grid items-center grid-cols-4 justify-between MainBgColor rounded-md py-2 font-semibold text-white">
-        <span className="w-[100px]">ID</span>
-        <span
-          className="flex gap-2 items-center"
-          onClick={() => handleSortChange("item_name")}
-        >
-          ITEM <FaSort className="hover:text-blue-600 cursor-pointer" />
-        </span>
-        <span>PRICE</span>
-        <span
-          className="flex gap-2 items-center"
-          onClick={() => handleSortChange("item_quantity")}
-        >
-          STOCK <FaSort className="hover:text-blue-600 cursor-pointer" />
-        </span>
+      <div className="flex">
+        <div className="mt-2 w-full px-2 grid items-center grid-cols-4 justify-between MainBgColor rounded-md py-2 font-semibold text-white">
+          <span className="w-[100px]">ID</span>
+          <span
+            className="flex gap-2 items-center"
+            onClick={() => handleSortChange("item_name")}
+          >
+            ITEM <FaSort className="hover:text-blue-600 cursor-pointer" />
+          </span>
+          <span>PRICE</span>
+          <span
+            className="flex gap-2 items-center"
+            onClick={() => handleSortChange("item_quantity")}
+          >
+            STOCK <FaSort className="hover:text-blue-600 cursor-pointer" />
+          </span>
+        </div>
       </div>
-
-      <div className="flex flex-col h-[65vh] overflow-y-auto overflow-x-hidden">
-        {sortedData.length === 0 ? (
-          <>NO DATA</>
-        ) : (
-          <>
-            {sortedData.map((item, index) => (
-              <ItemConfig
-                key={index}
-                item={item}
-                index={index}
-                metaData_Category={metaData_Category}
-              />
-            ))}
-          </>
-        )}
+      <div className="flex flex-col overflow-y-auto overflow-x-hidden">
+        {sortedData.map((item, index) => (
+          <ItemConfig
+            key={index}
+            item={item}
+            index={index}
+            metaData_Category={metaData_Category}
+          />
+        ))}
+        {sortedData.length === 0 && <>NO DATA</>}
       </div>
     </div>
   );
