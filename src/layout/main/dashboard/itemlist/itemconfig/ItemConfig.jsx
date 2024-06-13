@@ -39,7 +39,15 @@ const ItemConfig = ({ item, index, metaData_Category }) => {
             </div>
           </div>
         </div>
-        <div className=""></div>
+
+        {item.item_sizes?.map((sizes, index) => (
+          <div className="grid items-center grid-cols-4 font-thin px-2">
+            <label></label>
+            <label className="pl-2">{sizes.size}</label>
+            <label>{sizes.price}</label>
+            <label>{sizes.stock}</label>
+          </div>
+        ))}
       </div>
 
       {isDelete && (
