@@ -51,7 +51,7 @@ const AddToCartModal = ({
   if (!openaddToCart) return;
   return (
     <div className="fixed inset-0 w-full h-full backdrop-blur-[1px] items-center justify-center flex">
-      <div className="flex flex-col gap-1 bg-slate-100 w-[300px] h-[400px] shadow-md p-2 rounded-md select-none">
+      <div className="flex flex-col gap-1 bg-slate-100 w-[300px] h-auto shadow-md p-2 rounded-md select-none">
         <div className="flex justify-end">
           <IoClose
             onClick={() =>

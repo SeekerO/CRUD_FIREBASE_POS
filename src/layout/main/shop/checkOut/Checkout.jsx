@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { handlePaid, handleOrderStore } from "../../../../components/firebase";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment/moment";
 import { IoIosArrowBack } from "react-icons/io";
 import { FaCashRegister } from "react-icons/fa";
+import { ring } from "ldrs";
+
+ring.register();
 
 const Checkout = ({
   isAddToCart,
@@ -12,6 +15,7 @@ const Checkout = ({
   setopenCart,
   setAddToCart,
 }) => {
+  const [isSuccess, setisSuccess] = useState(false);
   const handleComputation = (quantity, price) => {
     const intNumber = parseInt(price, 10);
     const result = intNumber * quantity;
@@ -28,6 +32,7 @@ const Checkout = ({
 
   const handlePayment = async () => {
     try {
+      setisSuccess(true);
       await handlePaid(isAddToCart);
       // You can add additional logic here if needed, such as clearing the cart
       const order_list = {
@@ -53,7 +58,7 @@ const Checkout = ({
   if (!openCheckout) return;
   return (
     <div className="fixed inset-0 w-full h-full backdrop-blur-[1px] justify-center items-center flex ">
-      <div className="w-fit h-[500px] bg-slate-100 rounded-md p-1 shadow-md px-2 overflow-hidden select-none  flex justify-between">
+      <div className="w-auto h-[500px] bg-slate-100 rounded-md p-1 shadow-md px-2 overflow-hidden select-none  flex justify-between">
         <div className="flex flex-col w-full">
           <div className="flex  gap-2 w-full text-[30px] mt-1 items-center ">
             <IoIosArrowBack
@@ -91,13 +96,25 @@ const Checkout = ({
               <span className="text-center">{totalPrice}</span>
             </div>
           </div>
-          <button
-            onClick={() => handlePayment()}
-            className="flex gap-1 items-center justify-center w-full bg-blue-600 text-white py-1 rounded-md font-semibold hover:bg-opacity-50 hover:text-black "
-          >
-            <FaCashRegister />
-            PAID
-          </button>
+          {isSuccess ? (
+            <div className="w-full p-1 flex items-center justify-center">
+              <l-ring
+                size="40"
+                stroke="5"
+                bg-opacity="0"
+                speed="2"
+                color="#25AE9C"
+              ></l-ring>
+            </div>
+          ) : (
+            <button
+              onClick={() => handlePayment()}
+              className="flex gap-1 items-center justify-center w-full bg-blue-600 text-white py-1 rounded-md font-semibold hover:bg-opacity-50 hover:text-black "
+            >
+              <FaCashRegister />
+              PAID
+            </button>
+          )}
         </div>
       </div>
     </div>

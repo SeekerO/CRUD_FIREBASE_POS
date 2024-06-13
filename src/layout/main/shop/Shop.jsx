@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import SearchBar from "../../../components/SearchBar";
 import ItemCell from "./itemcell/ShopItemCell";
-import { FaCartShopping } from "react-icons/fa6";
+import { RiFilePaper2Fill } from "react-icons/ri";
+import { CiCircleRemove } from "react-icons/ci";
 import Cart from "./GoToCard/Cart";
 const Shop = ({ isFetch_Data, metaData_Category }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,26 +30,38 @@ const Shop = ({ isFetch_Data, metaData_Category }) => {
   const categoryFilteredData = filter_data_by_category(filteredData);
 
   return (
-    <div className="w-full h-full bg-slate-200 rounded-md p-2 flex flex-col ">
+    <div className="w-full h-full rounded-md p-2 flex flex-col ">
       <div className="Title flex w-full  hitems-center justify-between ">
         <h1 className="Title">SHOP</h1>
-        <div
-          onClick={() => setopenCart(!openCart)}
-          className={`${
-            isAddToCart.length !== 0 && "text-red-500"
-          } flex gap-1 items-center cursor-pointer`}
-        >
-          <span className="">{isAddToCart.length}</span>{" "}
-          <FaCartShopping className="mr-3" />
+        <div className="flex items-center">
+          {" "}
+          <div
+            onClick={() => setopenCart(!openCart)}
+            className={`${
+              isAddToCart.length !== 0 && "text-blue-500"
+            } flex gap-1 items-center cursor-pointer`}
+          >
+            <span className="">{isAddToCart.length}</span>{" "}
+            <RiFilePaper2Fill className="mr-3" />
+          </div>
+          {isAddToCart.length !== 0 && (
+            <CiCircleRemove
+              className="hover:text-red-500 cursor-pointer"
+              onClick={() => setAddToCart([])}
+            />
+          )}
         </div>
       </div>
       <div className="flex flex-col gap-2 mb-2 border-b-2 border-slate-300">
         <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
-        <div className="flex gap-4 mb-3 w-full flex-wrap">
+        <div className="flex gap-3 mb-3 w-full flex-wrap">
           <button
             onClick={handleCategoryChange}
             value={"ALL"}
-            className="uppercase p-1 MainBgColor text-white font-bold rounded-md px-4"
+            className={`${
+              categoryFilter === "ALL" &&
+              "MainTextColor underline underline-offset-2"
+            } uppercase p-1 text-black font-semibold rounded-md px-2`}
           >
             ALL
           </button>
@@ -57,7 +70,10 @@ const Shop = ({ isFetch_Data, metaData_Category }) => {
               key={index}
               onClick={handleCategoryChange}
               value={item.category}
-              className="uppercase p-1 MainBgColor text-white font-bold rounded-md px-4"
+              className={`${
+                categoryFilter === item.category &&
+                "MainTextColor underline underline-offset-2"
+              } uppercase p-1 text-black font-semibold rounded-md px-2`}
             >
               {item.category}
             </button>

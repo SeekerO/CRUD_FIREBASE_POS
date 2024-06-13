@@ -65,7 +65,7 @@ const Itemlist = ({
         {isMobile && (
           <button
             onClick={() => HandleDeviceScreen()}
-            className=" flex gap-1 shrink-0 items-center MainBgColor p-1 text-white rounded-md hover:shadow-md"
+            className=" flex gap-1 shrink-0 items-center MainBgColor p-1 text-white rounded-md hover:shadow-md "
           >
             <span>ADD ITEMS</span> <FiPlus />
           </button>
@@ -74,7 +74,7 @@ const Itemlist = ({
         <div>
           <select
             required
-            className="p-1 outline-none rounded-md"
+            className="p-1 outline-none rounded-md border-2 border-slate-300"
             name="item_category"
             onChange={handleCategoryChange}
             value={categoryFilter}

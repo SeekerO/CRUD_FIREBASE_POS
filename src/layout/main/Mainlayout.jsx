@@ -1,6 +1,9 @@
 import React, { Suspense, useState, useLayoutEffect, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { lazy } from "react";
+import { ring } from "ldrs";
+
+ring.register();
 
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const Shop = lazy(() => import("./shop/Shop"));
@@ -69,8 +72,20 @@ const Mainlayout = () => {
   }, []);
 
   return (
-    <div className="w-full h-full bg-slate-100 md:px-10  px-2 py-5 rounded-l-[25px] shadow-2xl shadow-gray-800">
-      <Suspense fallback={"Loading..."}>
+    <div className="w-full h-full bg-slate-100 md:px-10  px-2 py-5 rounded-l-[40px] shadow-2xl shadow-gray-700">
+      <Suspense
+        fallback={
+          <div className="w-full h-full flex justify-center items-center">
+            <l-ring
+              size="40"
+              stroke="5"
+              bg-opacity="0"
+              speed="2"
+              color="#25AE9C"
+            ></l-ring>
+          </div>
+        }
+      >
         <Routes>
           <Route
             path="/"

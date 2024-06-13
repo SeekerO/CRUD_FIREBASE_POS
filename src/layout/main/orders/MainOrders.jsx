@@ -49,32 +49,33 @@ const MainOrders = () => {
 
   return (
     <div className="flex flex-col h-full w-full">
-      <div className="flex gap-4 flex-wrap">
-        <div className="w-fit h-auto MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
-          <span className="font-bold text-[20px] mr-10">TODAY SALES</span>
+      <div className="flex gap-4 flex-wrap mb-2">
+        <div className="w-fit h-auto bg-sky-500 rounded-md p-2 font-semibold text-white flex flex-col ">
           <span className="mt-1 flex gap-1 items-center text-[30px]">
             <FaPesoSign />{" "}
             <span>{parseFloat(sales.todaySales).toFixed(2)}</span>
           </span>
+          <span className="font-semibold text-[15px] mr-20">TODAY SALES</span>
         </div>
-        <div className="w-fit h-auto  MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
-          <span className="font-bold text-[20px] mr-10">
-            AVG. MONTHLY SALES
-          </span>
+        <div className="w-fit h-auto  bg-amber-500 rounded-md p-2 font-semibold text-white flex flex-col ">
           <span className="mt-1 flex gap-1 items-center text-[30px]">
             <FaPesoSign />{" "}
             <span>{parseFloat(sales.AvgMonthSales).toFixed(2)}</span>
           </span>
-        </div>
-        <div className="w-fit h-auto MainBgColor rounded-md p-2 font-semibold text-white flex flex-col ">
-          <span className="font-bold text-[20px] mr-10">TOTAL SALES</span>
-          <span className="mt-1 flex gap-1 items-center text-[30px]">
-            <FaPesoSign /> <span>{sales.totalSales}</span>
+          <span className="font-semibold text-[15px] mr-20">
+            AVG. MONTHLY SALES
           </span>
         </div>
+        <div className="w-fit h-auto bg-green-500 rounded-md p-2 font-semibold text-white flex flex-col ">
+          <span className="mt-1 flex gap-1 items-center text-[30px]">
+            <FaPesoSign />{" "}
+            <span> {parseFloat(sales.totalSales).toFixed(2)}</span>
+          </span>
+          <span className="font-semibold text-[15px] mr-20">TOTAL SALES</span>
+        </div>
       </div>
-      <h1 className="font-semibold text-[30px]">Recent Orders</h1>
-      <div className="w-full h-full overflow-y-auto">
+      <h1 className="font-semibold MainTextColor text-[30px]">Recent Orders</h1>
+      <div className="w-full h-full overflow-y-auto text-black">
         {orders
           .sort((a, b) => (a.order_date < b.order_date ? 1 : -1))
           .map((item, index) => (

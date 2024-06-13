@@ -10,11 +10,11 @@ const ItemCell = ({ item, isAddToCart, setAddToCart }) => {
         onClick={() => setopenaddToCart(!openaddToCart)}
         className="w-[200px] h-[200px] MainBgColor text-white rounded-md p-2 flex flex-col shadow-md select-none cursor-pointer hover:scale-105 duration-300"
       >
-        <label className="font-semibold text-[25px]">{item.item_name}</label>
+        <label className="font-semibold text-[25px] cursor-pointer">{item.item_name}</label>
         {item.item_price !== "" && item.item_quantity !== "" && (
           <>
-            <label className="text-[20px]">₱ {item.item_price}</label>
-            <em className="text-[15px] flex gap-1 mt-1 text-gray-100">
+            <label className="text-[20px] cursor-pointer">₱ {item.item_price}</label>
+            <em className="text-[15px] flex gap-1 mt-1 text-gray-100 cursor-pointer">
               In Stock <span>{item.item_quantity}</span>
             </em>
           </>

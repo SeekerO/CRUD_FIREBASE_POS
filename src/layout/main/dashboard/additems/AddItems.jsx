@@ -151,7 +151,7 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
                   name="item_category"
                   value={formData.item_category}
                 >
-                  <option></option>
+                  <option hidden>Select Here..</option>
                   {metaData_Category.map((cate, index) => (
                     <option key={index} value={cate.category}>
                       {cate.category}

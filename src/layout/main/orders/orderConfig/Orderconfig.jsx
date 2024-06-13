@@ -22,8 +22,8 @@ const Orderconfig = ({ item }) => {
       ref={ref}
       onClick={() => setexpandCell(!expandCell)}
       className={`${
-        expandCell ? "h-[400px]" : "h-[100px]"
-      } select-none flex flex-col gap-2 bg-slate-200 mt-2 p-2 rounded-md duration-300 active:bg-slate-700 active:text-white cursor-pointer overflow-hidden`}
+        expandCell ? "h-[300px]" : "h-[100px]"
+      } select-none flex flex-col gap-2 bg-slate-200 mt-2 p-2 rounded-md duration-300 active:bg-slate-400 active:text-white cursor-pointer overflow-hidden`}
     >
       <span className="gap-1 flex">
         <span className="font-semibold">ID:</span>
@@ -34,7 +34,7 @@ const Orderconfig = ({ item }) => {
         <span> {item.order_date}</span>
       </span>
       {expandCell && (
-        <div className="h-full overflow-auto">
+        <div className="h-full overflow-y-auto">
           <div className=" w-full grid-cols-3 grid font-semibold">
             <span>QUANTITY</span>
             <span>ITEM</span>

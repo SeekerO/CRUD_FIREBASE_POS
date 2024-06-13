@@ -14,7 +14,7 @@ const Dashboard = ({ isFetch_Data, metaData_Category, isMobile }) => {
   }, []);
 
   return (
-    <div className="w-full h-full bg-slate-200 rounded-md p-2 flex flex-col">
+    <div className="w-full h-full rounded-md p-2 flex flex-col">
       <h1 className="Title">DASHBOARD</h1>
 
       <main className="mt-4 gap-2 h-full flex">
