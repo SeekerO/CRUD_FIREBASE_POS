@@ -9,17 +9,16 @@ import { IoAdd, IoClose } from "react-icons/io5";
 import { MdOutlineAddBox } from "react-icons/md";
 import { TbCategoryPlus } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
-import SizePicker from "../component_dashboard/SizePicker";
 import { NotifyWarning } from "../../../../components/Notify";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { isMobile } from "react-device-detect";
 
-const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
+const AddItems = ({ metaData_Category, HandleDeviceScreen }) => {
   const [addCategory, setaddCategory] = useState(false);
   const [isOptional, setisOptional] = useState(false);
   const [inputCatergories, setCategories] = useState("");
-  const [selectedSizes, setSelectedSizes] = useState([]);
-  const [sizePrices, setSizePrices] = useState([]);
+  const [sizesPrice, setSizesPrice] = useState([]);
+
   const [formData, setFormData] = useState({
     item_name: "",
     item_price: "",
@@ -45,8 +44,11 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
     var saveUUID = uuidv4();
 
     if (formData.item_category !== "" && formData.item_name !== "") {
-      if (formData.item_price !== "" && formData.item_quantity !== "") {
-        writeNewItem(formData, saveUUID, setFormData, sizePrices);
+      if (
+        (formData.item_price !== "" && formData.item_quantity !== "") ||
+        sizesPrice.length !== 0
+      ) {
+        writeNewItem(formData, saveUUID, setFormData, sizesPrice);
         setFormData({
           item_name: "",
           item_price: "",
@@ -54,8 +56,7 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
           item_category: "",
         });
         setisOptional(false);
-        setSelectedSizes([]);
-        setSizePrices([]);
+        setSizesPrice([]);
         setCategories("");
       } else {
         const warning = "Please fill the a price and quantity";
@@ -74,29 +75,6 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
     setCategories(""); // Clear category input
   };
 
-  const handleSizeChange = (size) => {
-    if (selectedSizes.includes(size)) {
-      setSelectedSizes(selectedSizes.filter((s) => s !== size));
-      setSizePrices(sizePrices.filter((prize) => prize.size !== size));
-    } else {
-      setSelectedSizes([...selectedSizes, size]);
-      setSizePrices([...sizePrices, { size, price: "", stock: "" }]);
-    }
-  };
-
-  const handleOptionalSizes_function = () => {
-    setisOptional(!isOptional);
-    setSelectedSizes([]);
-    setSizePrices([]);
-  };
-
-  const handlePriceChange = (size, field, value) => {
-    const newSizePrices = sizePrices.map((item) =>
-      item.size === size ? { ...item, [field]: value } : item
-    );
-    setSizePrices(newSizePrices);
-  };
-
   const handleRemoveItem = (id) => {
     set_meta_data_state(meta_data_state.filter((item) => item.id !== id));
   };
@@ -106,12 +84,33 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
     UpdateCategory_Database(meta_data_state);
   };
 
+  const addSize = (e) => {
+    e.preventDefault();
+    setisOptional(!isOptional);
+    setSizesPrice((prevState) => [
+      ...prevState,
+      { size: "", price: "", stock: "" },
+    ]);
+  };
+
+  const updateSize = (index, field, value) => {
+    setSizesPrice((prevState) =>
+      prevState.map((item, i) =>
+        i === index ? { ...item, [field]: value } : item
+      )
+    );
+  };
+
+  const removeSize = (index) => {
+    setSizesPrice((prevState) => prevState.filter((_, i) => i !== index));
+  };
+
   return (
     <div className="w-fit h-full py-5 px-1 bg-slate-300 rounded-md shadow-md flex flex-col items-center">
       <div className="flex w-full items-center">
         {isMobile && (
           <MdOutlineArrowBackIosNew
-            className="text-[25px] cursor-pointer hover:text-blue-500"
+            className="text-[30px] cursor-pointer hover:text-blue-500"
             onClick={() => HandleDeviceScreen()}
           />
         )}
@@ -121,51 +120,69 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
         </label>
       </div>
       <form className="px-2 mt-5 space-y-3 w-full  overflow-y-auto flex-flex-col">
-        <div className="gap-1 flex items-center justify-between">
-          <label>CATEGORY:</label>
-          <div className="flex items-center justify-between">
-            {addCategory ? (
-              <div className="flex flex-col w-full h-full">
-                <div className="w-full flex">
-                  <input
+        {/* CATEGORY */}
+        <div className="gap-1 flex items-center justify-between flex-col w-full">
+          <div className="flex gap-1 items-center justify-between w-full">
+            <label>CATEGORY:</label>
+            <div className="flex items-center justify-between">
+              {addCategory ? (
+                <div className="flex flex-col w-full h-full">
+                  <div className="w-full flex">
+                    <input
+                      required
+                      type="text"
+                      className="ItemInput"
+                      placeholder="Add Category Here.."
+                      value={inputCatergories}
+                      onChange={(e) => setCategories(e.target.value)}
+                    />
+                    <IoClose
+                      onClick={() => setaddCategory(!addCategory)}
+                      className="text-[30px] MainTextColor hover:text-blue-600 cursor-pointer"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <select
+                    onChange={handleChange}
                     required
-                    type="text"
-                    className="ItemInput"
-                    placeholder="Add Category Here.."
-                    value={inputCatergories}
-                    onChange={(e) => setCategories(e.target.value)}
-                  />
-                  <IoClose
+                    className="p-1 outline-none rounded-md"
+                    name="item_category"
+                    value={formData.item_category}
+                  >
+                    <option hidden>Select Here..</option>
+                    {metaData_Category.map((cate, index) => (
+                      <option key={index} value={cate.category}>
+                        {cate.category}
+                      </option>
+                    ))}
+                  </select>
+                  <MdOutlineAddBox
                     onClick={() => setaddCategory(!addCategory)}
                     className="text-[30px] MainTextColor hover:text-blue-600 cursor-pointer"
                   />
-                </div>
-              </div>
-            ) : (
-              <>
-                <select
-                  onChange={handleChange}
-                  required
-                  className="p-1 outline-none rounded-md"
-                  name="item_category"
-                  value={formData.item_category}
-                >
-                  <option hidden>Select Here..</option>
-                  {metaData_Category.map((cate, index) => (
-                    <option key={index} value={cate.category}>
-                      {cate.category}
-                    </option>
-                  ))}
-                </select>
-                <MdOutlineAddBox
-                  onClick={() => setaddCategory(!addCategory)}
-                  className="text-[30px] MainTextColor hover:text-blue-600 cursor-pointer"
-                />
-              </>
-            )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
+          {addCategory && (
+            <div className="w-full">
+              {meta_data_state.map((item, index) => (
+                <div
+                  onClick={() => handleRemoveItem(item.id)}
+                  key={index}
+                  className="flex w-full justify-between mt-1 border-[1px] border-gray-400 p-1 rounded-md"
+                >
+                  <span>{item.category}</span>
 
+                  <MdDelete className="text-[20px] cursor-pointer hover:text-red-500" />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        {/* ITEM INPUT */}
         {!addCategory && (
           <>
             <div className="ItemCard">
@@ -179,7 +196,7 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
                 onChange={handleChange}
               />
             </div>
-            {!isOptional && (
+            {sizesPrice.length === 0 && (
               <>
                 <div className="ItemCard">
                   <label>PRICE:</label>
@@ -223,67 +240,47 @@ const AddItems = ({ metaData_Category, HandleDeviceScreen, deviceType }) => {
                 </div>
               </>
             )}
-            <SizePicker
-              handleSizeChange={handleSizeChange}
-              handleOptionalSizes_function={handleOptionalSizes_function}
-              handlePriceChange={handlePriceChange}
-              sizePrices={sizePrices}
-              selectedSizes={selectedSizes}
-              isOptional={isOptional}
-            />
-            <div>
-              <label className="block mb-2">Prizes:</label>
-              {sizePrices.map((prize, index) => (
-                <div key={index} className="mb-2 flex items-center gap-2">
-                  <input
-                    type="text"
-                    placeholder="Size"
-                    value={prize.size}
-                    readOnly
-                    className="w-[100px] px-1 py-1 rounded-md"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Price"
-                    value={prize.price}
-                    onChange={(e) =>
-                      handlePriceChange(prize.size, "price", e.target.value)
-                    }
-                    className="w-[100px] px-1 py-1 rounded-md"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Stock"
-                    value={prize.stock}
-                    onChange={(e) =>
-                      handlePriceChange(prize.size, "stock", e.target.value)
-                    }
-                    className="w-[100px] px-1 py-1 rounded-md"
-                  />
-                  <IoClose
-                    onClick={() => handleSizeChange(prize.size)}
-                    className="text-[20px] cursor-pointer text-red-500"
-                  />
-                </div>
-              ))}
-            </div>
-          </>
-        )}
-
-        {addCategory && (
-          <div className="">
-            {meta_data_state.map((item, index) => (
-              <div
-                onClick={() => handleRemoveItem(item.id)}
-                key={index}
-                className="flex w-full justify-between mt-1 border-[1px] border-gray-400 p-1 rounded-md"
+            <div className="flex items-center gap-2">
+              <span>Optional:</span>
+              <button
+                onClick={addSize}
+                className="px-2 py-1 bg-green-500 text-white rounded-md"
               >
-                <span>{item.category}</span>
-
-                <MdDelete className="text-[20px] cursor-pointer hover:text-red-500" />
+                Add Size
+              </button>
+            </div>
+            {sizesPrice.map((item, index) => (
+              <div key={index} className="flex gap-x-2 mt-5">
+                <input
+                  type="text"
+                  placeholder="Size"
+                  value={item.size}
+                  onChange={(e) => updateSize(index, "size", e.target.value)}
+                  className="w-[70px] px-1 py-1 rounded-md"
+                />
+                <input
+                  type="text"
+                  placeholder="Price"
+                  value={item.price}
+                  onChange={(e) => updateSize(index, "price", e.target.value)}
+                  className="w-[70px] px-1 py-1 rounded-md"
+                />
+                <input
+                  type="text"
+                  placeholder="Stock"
+                  value={item.stock}
+                  onChange={(e) => updateSize(index, "stock", e.target.value)}
+                  className="w-[70px] px-1 py-1 rounded-md"
+                />
+                <button
+                  onClick={() => removeSize(index)}
+                  className="px-2 py-1 bg-red-500 text-white rounded-md hover:scale-105 duration-300"
+                >
+                  Remove
+                </button>
               </div>
             ))}
-          </div>
+          </>
         )}
 
         {addCategory ? (

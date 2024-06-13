@@ -17,27 +17,31 @@ const ItemConfig = ({ item, index, metaData_Category }) => {
 
   return (
     <>
-      <div
-        key={index}
-        className=" mt-1 w-full px-2 grid items-center grid-cols-4 justify-between MainBgColor rounded-md py-2 font-semibold text-white hover:py-3 duration-300 "
-      >
-        <label className="w-[100px]">{index + 1}</label>
-        <label className="truncate overflow-hidden">{item.item_name}</label>
-        <label>{item.item_price}</label>
-        <div className="w-full justify-between flex items-center">
-          <label>{item.item_quantity}</label>
-          <div className="flex gap-2 text-[25px]">
-            <FiEdit
-              onClick={() => setisEdit(!isEdit)}
-              className="hover:text-blue-500 cursor-pointer"
-            />
-            <MdDelete
-              onClick={() => setisDelete(!isDelete)}
-              className="hover:text-red-500 cursor-pointer"
-            />
+      <div className="MainBgColor flex flex-col w-full mt-1  rounded-md py-2 font-semibold text-white hover:py-3 duration-300 ">
+        <div
+          key={index}
+          className=" w-full px-2 grid items-center grid-cols-4 justify-between "
+        >
+          <label className="w-[100px]">{index + 1}</label>
+          <label className="truncate overflow-hidden">{item.item_name}</label>
+          <label>{item.item_price}</label>
+          <div className="w-full justify-between flex items-center">
+            <label>{item.item_quantity}</label>
+            <div className="flex gap-2 text-[25px]">
+              <FiEdit
+                onClick={() => setisEdit(!isEdit)}
+                className="hover:text-blue-500 cursor-pointer"
+              />
+              <MdDelete
+                onClick={() => setisDelete(!isDelete)}
+                className="hover:text-red-500 cursor-pointer"
+              />
+            </div>
           </div>
         </div>
+        <div className=""></div>
       </div>
+
       {isDelete && (
         <div className="fixed inset-0 w-full h-full backdrop-blur-[1px] items-center justify-center flex">
           <div className="bg-slate-100 w-[320px] h-[150px] flex flex-col p-2 text-center rounded-md shadow-md">
