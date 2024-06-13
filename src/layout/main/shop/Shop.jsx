@@ -3,7 +3,7 @@ import SearchBar from "../../../components/SearchBar";
 import ItemCell from "./itemcell/ShopItemCell";
 import { RiFilePaper2Fill } from "react-icons/ri";
 import { CiCircleRemove } from "react-icons/ci";
-import Cart from "./GoToCard/Cart";
+import Cart from "./GoToCart/Cart";
 const Shop = ({ isFetch_Data, metaData_Category }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("ALL");

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import { IoClose } from "react-icons/io5";
-import { v4 as uuidv4 } from "uuid";
+
 const AddToCartModal = ({
   item,
   openaddToCart,

@@ -50,7 +50,7 @@ const Cart = ({ isAddToCart, setAddToCart, openCart, setopenCart }) => {
               <span>{handleComputation(item.quantity, item.price)}</span>
               <span
                 onClick={() => handleRemoveItem(item.id)}
-                className="w-full justify-center flex items-center text-[20px] cursor-pointer hover:text-red-500"
+                className="w-full justify-center flex items-center text-[25px] cursor-pointer hover:text-red-500"
               >
                 <MdDelete />
               </span>
