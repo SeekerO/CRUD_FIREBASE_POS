@@ -17,7 +17,11 @@ const ItemConfig = ({ item, index, metaData_Category }) => {
 
   return (
     <>
-      <div className="flex MainBgColor w-full mt-1  rounded-md py-2 font-semibold text-white hover:py-3 duration-300 ">
+      <div
+        className={`${
+          item.item_quantity === 0 && "text-red-500"
+        } flex MainBgColor w-full mt-1  rounded-md py-2 font-semibold text-white hover:py-3 duration-300 `}
+      >
         <div
           className="w-full cursor-pointer"
           onClick={() => setisEdit(!isEdit)}
@@ -40,7 +44,9 @@ const ItemConfig = ({ item, index, metaData_Category }) => {
           {item.item_sizes?.map((sizes, index) => (
             <div
               key={index}
-              className="grid items-center grid-cols-4 font-thin px-2"
+              className={`${
+                sizes.stock === 0 ? "text-red-500 font-semibold" : "font-thin"
+              } grid items-center grid-cols-4  px-2`}
             >
               <label></label>
               <label className="pl-2">{sizes.size}</label>
