@@ -34,7 +34,9 @@ const AddToCartModal = ({
     };
 
     const isSelectedSizeValid =
-      item?.item_sizes.length !== 0 && selectedSize?.length !== 0;
+      item?.item_sizes?.length !== 0 && selectedSize?.length !== 0;
+
+    const isItemSizeValid = item?.item_sizes !== undefined;
 
     var newItem = [];
 
@@ -49,10 +51,10 @@ const AddToCartModal = ({
 
       handleAddToCartArray(newItem);
     } else {
-      NotifyWarning("Please select a size")
+      isItemSizeValid && NotifyWarning("Please select a size");
     }
 
-    if (item?.item_sizes.length === 0) {
+    if (!isItemSizeValid) {
       newItem = {
         id: item.id,
         item: item.item_name,
