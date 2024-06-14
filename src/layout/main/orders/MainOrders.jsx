@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { readDataOrders, listenForOrders } from "../../../components/firebase";
 import Orderconfig from "./orderConfig/Orderconfig";
 import { FaPesoSign } from "react-icons/fa6";
 import moment from "moment";
-const MainOrders = () => {
-  const [orders, setOrders] = useState([]);
+const MainOrders = ({ orders }) => {
   const [sales, setSales] = useState({
     todaySales: 0,
     AvgMonthSales: 0,
@@ -12,28 +10,8 @@ const MainOrders = () => {
   });
 
   useEffect(() => {
-    const fetch = async () => {
-      const data = await readDataOrders();
-      if (data) {
-        const ordersArray = Object.entries(data).map(([id, value]) => ({
-          id,
-          ...value,
-        }));
-        setOrders(ordersArray);
-        calculateSales(ordersArray);
-      }
-    };
-    fetch();
-  }, []);
-
-  useEffect(() => {
-    const handleNewItem = (item) => {
-      setOrders((orders) => [...orders, item]);
-    };
-
-    listenForOrders(handleNewItem);
     calculateSales(orders);
-  }, []);
+  }, [orders]);
 
   const calculateSales = (ordersArray) => {
     const today = moment().startOf("day");

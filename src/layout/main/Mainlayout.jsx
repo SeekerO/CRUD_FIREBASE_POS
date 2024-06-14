@@ -11,20 +11,25 @@ const Orders = lazy(() => import("./orders/MainOrders"));
 import {
   readData,
   readCategory,
+  readDataOrders,
   listenForNewItems,
   listenForItemUpdates,
   listenForNewItemsCategory,
   listenForItemCategory,
+  listenForOrdersonChildAdded,
+  listenForOrdersOnValue,
 } from "../../components/firebase";
 
 const Mainlayout = () => {
   const [isFetch_Data, setFetch_Data] = useState([]);
   const [metaData_Category, setmetaData_Category] = useState([]);
+  const [metaData_orders, setOrders] = useState([]);
   useLayoutEffect(() => {
     const fetch = async () => {
       try {
         const data = await readData();
         const category = await readCategory();
+        const order = await readDataOrders();
 
         if (data) {
           setFetch_Data(
@@ -34,6 +39,15 @@ const Mainlayout = () => {
         if (category) {
           setmetaData_Category(
             Object.entries(category).map(([id, value]) => ({ id, ...value }))
+          );
+        }
+
+        if (order) {
+          setOrders(
+            Object.entries(order).map(([id, value]) => ({
+              id,
+              ...value,
+            }))
           );
         }
       } catch (error) {
@@ -54,8 +68,15 @@ const Mainlayout = () => {
       );
     };
 
+    const updateItemsShop = (newItems) => {
+      setOrders(
+        Object.entries(newItems)?.map(([id, value]) => ({ id, ...value }))
+      );
+    };
+
     listenForItemUpdates(updateItems);
     listenForItemCategory(updateItemsCategory);
+    listenForOrdersOnValue(updateItemsShop);
   }, []);
 
   useEffect(() => {
@@ -67,8 +88,13 @@ const Mainlayout = () => {
       setmetaData_Category((metaData_Category) => [...metaData_Category, item]);
     };
 
+    const handleNewItemOrder = (item) => {
+      setOrders((metaData_Category) => [...metaData_Category, item]);
+    };
+
     listenForNewItems(handleNewItem);
     listenForNewItemsCategory(handleNewItemCategory);
+    listenForOrdersonChildAdded(handleNewItemOrder);
   }, []);
 
   return (
@@ -105,7 +131,7 @@ const Mainlayout = () => {
               />
             }
           />
-          <Route path="/orders" element={<Orders />} />
+          <Route path="/orders" element={<Orders orders={metaData_orders} />} />
         </Routes>
       </Suspense>
     </div>

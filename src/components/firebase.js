@@ -156,7 +156,7 @@ export function listenForNewItems(callback) {
   );
 }
 
-export function listenForOrders(callback) {
+export function listenForOrdersonChildAdded(callback) {
   const itemsRef = ref(database, "orders");
 
   onChildAdded(
@@ -202,6 +202,14 @@ export function listenForItemCategory(callback) {
 
 export function listenForShop(callback) {
   const dbRef = ref(database, "shop");
+  onValue(dbRef, (snapshot) => {
+    const data = snapshot?.val() ? Object.values(snapshot.val()) : [];
+    callback(data);
+  });
+}
+
+export function listenForOrdersOnValue(callback) {
+  const dbRef = ref(database, "orders");
   onValue(dbRef, (snapshot) => {
     const data = snapshot?.val() ? Object.values(snapshot.val()) : [];
     callback(data);
