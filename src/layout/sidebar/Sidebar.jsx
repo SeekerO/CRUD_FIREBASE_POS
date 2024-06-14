@@ -3,12 +3,13 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { MdDashboard } from "react-icons/md";
 import { FaBasketShopping } from "react-icons/fa6";
 import { VscListOrdered } from "react-icons/vsc";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Sidebar = ({ isMobile }) => {
+  const currURL = useLocation();
   const [expandMenu, setexpandMenu] = useState(true);
-  const [focusOn, setfocusOn] = useState("DashBoard");
+  const [focusOn, setfocusOn] = useState(currURL.pathname);
 
   const SideBaritems = [
     { item: "DashBoard", icons: <MdDashboard />, to: "/" },
@@ -19,6 +20,10 @@ const Sidebar = ({ isMobile }) => {
   useEffect(() => {
     if (isMobile) setexpandMenu(false);
   }, [isMobile]);
+
+  useEffect(() => {
+    setfocusOn(currURL.pathname);
+  }, [currURL]);
 
   return (
     <div
@@ -66,9 +71,8 @@ const Sidebar = ({ isMobile }) => {
             to={sidebar.to}
             key={index}
             value={sidebar.item}
-            onClick={() => setfocusOn(sidebar.item)}
             className={`${expandMenu ? "ml-3" : "ml-1"} ${
-              focusOn === sidebar.item && "rounded-l-md text-black  bg-white"
+              focusOn === sidebar.to && "rounded-l-md text-black  bg-white"
             } flex  items-center gap-2 text-[18px] uppercase p-3 mt-1 font-semibold  cursor-pointer  duration-300 overflow-hidden `}
           >
             {sidebar.icons}

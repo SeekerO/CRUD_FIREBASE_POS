@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import { IoClose } from "react-icons/io5";
+import { NotifyWarning } from "../../../../components/Notify";
 
 const AddToCartModal = ({
   item,
@@ -10,7 +11,7 @@ const AddToCartModal = ({
   setAddToCart,
 }) => {
   const [itemQuantity, setItemQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedSize, setSelectedSize] = useState([]);
 
   const handleSizeChange = (size, price) => {
     setSelectedSize({ size, price });
@@ -26,26 +27,41 @@ const AddToCartModal = ({
   };
 
   const handleAddToCart = () => {
-    const newItem =
-      selectedSize === null
-        ? {
-            id: item.id,
-            item: item.item_name,
-            size: "Regular",
-            price: item.item_price,
-            quantity: itemQuantity,
-          }
-        : {
-            id: item.id,
-            item: item.item_name,
-            size: selectedSize.size,
-            price: selectedSize.price,
-            quantity: itemQuantity,
-          };
+    const handleAddToCartArray = (item) => {
+      setAddToCart([...isAddToCart, item]);
+      setopenaddToCart(!openaddToCart);
+      setItemQuantity(1);
+    };
 
-    setAddToCart([...isAddToCart, newItem]);
-    setopenaddToCart(!openaddToCart);
-    setItemQuantity(1);
+    const isSelectedSizeValid =
+      item?.item_sizes.length !== 0 && selectedSize?.length !== 0;
+
+    var newItem = [];
+
+    if (isSelectedSizeValid) {
+      newItem = {
+        id: item.id,
+        item: item.item_name,
+        size: selectedSize.size,
+        price: selectedSize.price,
+        quantity: itemQuantity,
+      };
+
+      handleAddToCartArray(newItem);
+    } else {
+      NotifyWarning("Please select a size")
+    }
+
+    if (item?.item_sizes.length === 0) {
+      newItem = {
+        id: item.id,
+        item: item.item_name,
+        size: "Regular",
+        price: item.item_price,
+        quantity: itemQuantity,
+      };
+      handleAddToCartArray(newItem);
+    }
   };
 
   if (!openaddToCart) return;

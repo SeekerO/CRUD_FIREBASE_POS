@@ -24,7 +24,7 @@ const MainOrders = () => {
       }
     };
     fetch();
-  }, [orders]);
+  }, []);
 
   useEffect(() => {
     const handleNewItem = (item) => {
@@ -32,6 +32,7 @@ const MainOrders = () => {
     };
 
     listenForOrders(handleNewItem);
+    calculateSales(orders);
   }, []);
 
   const calculateSales = (ordersArray) => {
